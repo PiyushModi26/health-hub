@@ -1,0 +1,40 @@
+.scanned-meds-container p {
+    margin-top: 0;
+    color: var(--secondary-color);
+    font-size: 0.95rem;
+}
+
+.scanned-meds-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.scanned-med-item {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.scanned-med-item .form-group {
+    margin-bottom: 1rem;
+}
+
+.scanned-med-item .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.modal-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-actions .add-btn {
+    width: auto;
+    padding: 0.8rem 1.5rem;
+}

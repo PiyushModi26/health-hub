@@ -1,63 +1,40 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React from 'react';
+import { useMedication } from '../contexts/MedicationContext';
 import MedicationList from '../components/dashboard/MedicationList';
-import MedicationForm from '../components/dashboard/MedicationForm';
+import NextMedication from '../components/dashboard/NextMedication';
+import AiHealthTip from '../components/dashboard/AiHealthTip'; // Re-importing the AI component
+import './DashboardPage.css';
 
 const DashboardPage = () => {
-  const { currentUser } = useAuth();
-  const [medications, setMedications] = useState([]);
-  const [editingMedication, setEditingMedication] = useState(null);
+  const { medications, loading } = useMedication();
 
-  // Memoize storageKey to prevent re-renders
-  const storageKey = `medications_${currentUser.id}`;
-
-  // Load medications from localStorage
-  useEffect(() => {
-    const storedMeds = JSON.parse(localStorage.getItem(storageKey) || '[]');
-    setMedications(storedMeds);
-  }, [storageKey]);
-
-  // Abstract function to update both state and localStorage
-  const updateMedications = (newMeds) => {
-    setMedications(newMeds);
-    localStorage.setItem(storageKey, JSON.stringify(newMeds));
-  };
-
-  const handleAddMed = (medToAdd) => {
-    updateMedications([...medications, medToAdd]);
-  };
-
-  const handleUpdateMed = (updatedMed) => {
-    const updatedMeds = medications.map(m => (m.id === updatedMed.id ? updatedMed : m));
-    updateMedications(updatedMeds);
-    setEditingMedication(null); // Exit editing mode
-  };
-
-  const handleDeleteMed = (idToDelete) => {
-    if (window.confirm('Are you sure you want to remove this medication?')) {
-      const updatedMeds = medications.filter(m => m.id !== idToDelete);
-      updateMedications(updatedMeds);
-    }
-  };
+  if (loading) {
+    return <div>Loading your dashboard...</div>;
+  }
 
   return (
-    <div className="dashboard-grid">
-      <div className="medication-schedule">
-        <div className="dashboard-header">
-          <h2>🗓️ Your Medication Schedule</h2>
+    // This layout will create the two columns
+    <div className="new-dashboard-layout">
+      
+      {/* --- Main Content (Left Column) --- */}
+      <div className="dashboard-main-content">
+        <NextMedication medications={medications} />
+        <div className="full-schedule-widget">
+          <div className="dashboard-header">
+            <h2>🗓️ Full Medication Schedule</h2>
+          </div>
+          <MedicationList
+            medications={medications}
+            isReadOnly={true}
+          />
         </div>
-        <MedicationList
-          medications={medications}
-          onDelete={handleDeleteMed}
-          onEdit={setEditingMedication}
-        />
       </div>
-      <MedicationForm
-        onAdd={handleAddMed}
-        onUpdate={handleUpdateMed}
-        editingMedication={editingMedication}
-        setEditingMedication={setEditingMedication}
-      />
+
+      {/* --- Sidebar (Right Column) --- */}
+      <div className="dashboard-sidebar">
+        <AiHealthTip />
+      </div>
+      
     </div>
   );
 };

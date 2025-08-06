@@ -41,14 +41,12 @@ body {
 }
 
 .logo {
-  font-size: 1.8rem;
+  font-size: 1.5rem; /* Slightly smaller text */
   font-weight: bold;
   color: var(--primary-color);
   cursor: pointer;
-}
-
-.logo-icon {
-  margin-right: 0.5rem;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center items vertically */
 }
 
 .app-header nav button {
@@ -119,7 +117,7 @@ body {
   color: var(--secondary-color);
 }
 
-.form-group input {
+.form-group input, .form-group select, .form-group textarea {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid var(--border-color);
@@ -128,7 +126,7 @@ body {
   box-sizing: border-box;
 }
 
-.form-group input:focus {
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
@@ -190,7 +188,7 @@ body {
   padding-bottom: 1rem;
 }
 
-.dashboard-header h2 {
+.dashboard-header h3 {
   margin: 0;
 }
 
@@ -277,16 +275,6 @@ body {
 }
 
 /* Medication Form */
-.medication-form-container form input,
-.medication-form-container form select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
 .medication-form-container form button {
   width: 100%;
   padding: 0.8rem;
@@ -307,9 +295,7 @@ body {
 
 /* AI Scanner */
 .ai-scanner {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px dashed var(--border-color);
+  text-align: center;
 }
 .ai-scanner h3 {
   margin-bottom: 1rem;
@@ -320,13 +306,14 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* THIS IS THE MODIFIED BUTTON STYLE */
 .upload-btn {
   width: 100%;
   padding: 0.8rem;
   font-size: 1rem;
   color: var(--primary-color);
   background-color: #e7f1ff;
-  border: 2px dashed var(--primary-color);
+  border: none; /* Dotted line removed */
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: background-color 0.2s;

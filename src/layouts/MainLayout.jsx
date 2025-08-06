@@ -1,10 +1,9 @@
-// src/layouts/MainLayout.jsx
 
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import logoSrc from '../assets/logo.png'; 
 
-// Re-defining the Header here as a component for the layout
 const Header = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -16,10 +15,16 @@ const Header = () => {
 
   return (
     <header className="app-header">
-      <div className="logo"><span role="img" aria-label="health icon" className="logo-icon">❤️‍🩹</span> Health Hub</div>
+      <div className="logo">
+        <img src={logoSrc} alt="Health Hub Logo" style={{ height: '40px', marginRight: '10px' }} />
+        <span>Health Hub</span>
+      </div>
       <nav>
         <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : ''}>
           <button>Dashboard</button>
+        </NavLink>
+        <NavLink to="/medications" className={({ isActive }) => isActive ? 'active' : ''}>
+          <button>Medications</button>
         </NavLink>
         <NavLink to="/reports" className={({ isActive }) => isActive ? 'active' : ''}>
           <button>Reports</button>
@@ -29,7 +34,6 @@ const Header = () => {
     </header>
   );
 };
-
 
 const MainLayout = ({ children }) => {
   return (

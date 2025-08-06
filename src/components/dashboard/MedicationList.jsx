@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 
-const MedicationList = ({ medications, onDelete, onEdit }) => {
+// Add isReadOnly as a prop, defaulting to false
+const MedicationList = ({ medications, onDelete, onEdit, isReadOnly = false }) => {
   const sortedMeds = useMemo(() => {
-    // Sorts medications by time, e.g., "08:00" comes before "13:00"
     return [...medications].sort((a, b) => a.time.localeCompare(b.time));
   }, [medications]);
 
   if (medications.length === 0) {
-    return <div className="empty-state">No medications scheduled. Add one to get started! 💊</div>;
+    return <div className="empty-state">No medications scheduled. Add one on the 'Medications' page! 💊</div>;
   }
 
   return (
@@ -21,10 +21,15 @@ const MedicationList = ({ medications, onDelete, onEdit }) => {
               <p>{med.dosage} &bull; {med.type}</p>
             </div>
           </div>
-          <div className="medication-actions">
-            <button onClick={() => onEdit(med)} className="edit-btn">Edit</button>
-            <button onClick={() => onDelete(med.id)} className="remove-btn">Remove</button>
-          </div>
+          
+          {/* --- This is the key change --- */}
+          {/* Only show buttons if isReadOnly is false */}
+          {!isReadOnly && (
+            <div className="medication-actions">
+              <button onClick={() => onEdit(med)} className="edit-btn">Edit</button>
+              <button onClick={() => onDelete(med.id)} className="remove-btn">Remove</button>
+            </div>
+          )}
         </li>
       ))}
     </ul>

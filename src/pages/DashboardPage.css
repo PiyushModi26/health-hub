@@ -1,0 +1,138 @@
+/* --- Main Layout --- */
+.new-dashboard-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Two columns: main content is twice as wide as the sidebar */
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.dashboard-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* --- Next Medication Widget --- */
+.next-med-widget {
+  background-color: #e3f2fd;
+  border-left: 5px solid #1976d2;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.next-med-widget h3 {
+  margin-top: 0;
+  color: #1976d2;
+}
+
+.next-med-card {
+  display: flex;
+  align-items: center;
+  background: var(--surface-color);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+}
+
+.next-med-image {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 1.5rem;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.next-med-details h4 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.next-med-details p {
+  margin: 0.25rem 0 0 0;
+  color: var(--secondary-color);
+}
+
+.next-med-time-highlight {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color) !important;
+}
+
+/* --- Full Schedule Widget --- */
+.full-schedule-widget {
+  background: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.full-schedule-widget .medication-list {
+  padding-top: 1rem;
+}
+
+/* --- AI Health Tip Sidebar --- */
+.dashboard-sidebar {
+  position: sticky;
+  top: 120px; /* Adjust so it "sticks" below your header when scrolling */
+}
+
+.ai-health-tip {
+  background: var(--surface-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.ai-health-tip h3 {
+  margin-top: 0;
+}
+
+.ai-health-tip textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  box-sizing: border-box;
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+
+.ai-health-tip button {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.ai-health-tip button:disabled {
+  background-color: var(--secondary-color);
+  cursor: not-allowed;
+}
+
+.ai-tip-response {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 992px) {
+  .new-dashboard-layout {
+    grid-template-columns: 1fr; /* Stack columns on smaller screens */
+  }
+
+  .dashboard-sidebar {
+    position: static; /* Remove sticky positioning on smaller screens */
+  }
+}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { getMedicationsFromImage } from '../../services/geminiService';
 
-const AIScanner = ({ onScanComplete, setFormError }) => {
+// The prop name is changed to be more descriptive
+const AIScanner = ({ onScanSuccess, setFormError }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleImageUpload = async (event) => {
@@ -11,28 +12,30 @@ const AIScanner = ({ onScanComplete, setFormError }) => {
     setIsLoading(true);
     setFormError('');
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = async () => {
-      try {
-        const base64String = reader.result.split(',')[1];
-        const extractedMeds = await getMedicationsFromImage(base64String);
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = async () => {
+        try {
+          const base64String = reader.result.split(',')[1];
+          const extractedMeds = await getMedicationsFromImage(base64String);
 
-        if (extractedMeds && extractedMeds.length > 0) {
-          onScanComplete(extractedMeds[0]);
-        } else {
-          setFormError("AI couldn't find any medications. Please try another image or add manually.");
+          if (extractedMeds && extractedMeds.length > 0) {
+            // Pass the ENTIRE array of medications up
+            onScanSuccess(extractedMeds);
+          } else {
+            setFormError("AI couldn't find any medications. Please try another image or add manually.");
+          }
+        } catch (error) {
+          setFormError(`AI Scan Failed: ${error.message}`);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        setFormError(`AI Scan Failed: ${error.message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    reader.onerror = () => {
+      };
+    } catch (error) {
       setIsLoading(false);
       setFormError("Failed to read the image file.");
-    };
+    }
   };
 
   return (
