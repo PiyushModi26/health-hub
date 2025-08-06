@@ -1,12 +1,15 @@
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${API_KEY}`;
+// src/services/geminiService.js
 
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+// This function now uses the 'gemini-1.5-flash-latest' model
 export async function getMedicationsFromImage(imageBase64) {
+  // --- CHANGE HERE: Updated model name in the URL ---
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+
   if (!API_KEY) {
     console.error("Gemini API key is not set in .env.local");
-    return Promise.resolve([
-      { name: "Lisinopril (Simulated)", dosage: "10mg", notes: "Once daily" },
-    ]);
+    return Promise.reject(new Error("API key is not configured."));
   }
 
   const payload = {
@@ -31,7 +34,8 @@ export async function getMedicationsFromImage(imageBase64) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error.message || "API error");
+      // Make the error message more user-friendly
+      throw new Error(errorData.error.message || "The model could not process the request.");
     }
 
     const data = await response.json();
@@ -39,27 +43,28 @@ export async function getMedicationsFromImage(imageBase64) {
     const jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
     return JSON.parse(jsonString);
   } catch (error) {
-    console.error("Error calling Gemini API:", error);
-    throw error;
+    console.error("Error calling Gemini API for image scanning:", error);
+    throw error; // Re-throw the error so the component can catch it
   }
 }
 
+
+// This function also now uses the 'gemini-1.5-flash-latest' model
 export async function getHealthTip(question) {
+  // --- CHANGE HERE: Updated model name in the URL ---
+  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+  
   if (!API_KEY) {
     console.error("Gemini API key is not set.");
     return "AI service is currently unavailable. Please check the API key configuration.";
   }
 
-  // Strong prompt with a safety disclaimer instruction
   const prompt = `
-    You are a helpful AI health assistant. A user has the following question about their medication or health: "${question}".
-    
-    Provide a general, helpful, and safe tip in response. 
-    
-    IMPORTANT: Do NOT provide specific medical advice, dosages, or diagnoses. Your response should be for informational purposes only.
-    
+    You are a helpful AI health assistant. A user has the following question: "${question}".
+    Provide a general, helpful, and safe tip. 
+    IMPORTANT: Do NOT provide specific medical advice.
     ALWAYS conclude your response with the following disclaimer, exactly as written:
-    "Disclaimer: This is an AI-generated tip and not a substitute for professional medical advice. Always consult with your doctor or pharmacist for any health concerns."
+    "Disclaimer: This is an AI-generated tip and not a substitute for professional medical advice. Always consult with your doctor or pharmacist."
   `;
 
   const payload = {
@@ -67,13 +72,16 @@ export async function getHealthTip(question) {
   };
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`, {
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
 
-    if (!response.ok) throw new Error("API response was not ok.");
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error.message || "The model could not process the request.");
+    }
 
     const data = await response.json();
     return data.candidates[0].content.parts[0].text;

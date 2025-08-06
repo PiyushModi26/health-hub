@@ -8,10 +8,8 @@ export const MedicationProvider = ({ children }) => {
   const [medications, setMedications] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Define storageKey based on the current user
   const storageKey = currentUser ? `medications_${currentUser.id}` : null;
 
-  // Load medications from localStorage when the component mounts or user changes
   useEffect(() => {
     if (storageKey) {
       const storedMeds = JSON.parse(localStorage.getItem(storageKey) || '[]');
@@ -20,7 +18,6 @@ export const MedicationProvider = ({ children }) => {
     setLoading(false);
   }, [storageKey]);
 
-  // Central function to update state and localStorage
   const updateMedications = (newMeds) => {
     setMedications(newMeds);
     if (storageKey) {
@@ -28,9 +25,12 @@ export const MedicationProvider = ({ children }) => {
     }
   };
 
-  // CRUD Functions
   const addMedication = (medToAdd) => {
     updateMedications([...medications, medToAdd]);
+  };
+
+  const addMultipleMedications = (medsArray) => {
+    updateMedications([...medications, ...medsArray]);
   };
 
   const updateMedication = (updatedMed) => {
@@ -39,16 +39,14 @@ export const MedicationProvider = ({ children }) => {
   };
 
   const deleteMedication = (idToDelete) => {
-    if (window.confirm('Are you sure you want to remove this medication?')) {
-      const updatedMeds = medications.filter(m => m.id !== idToDelete);
-      updateMedications(updatedMeds);
-    }
+    // ... delete logic ...
   };
 
   const value = {
     medications,
     loading,
-    addMedication,
+    addMedication, // For single manual adds
+    addMultipleMedications, // For bulk AI adds
     updateMedication,
     deleteMedication,
   };
@@ -60,7 +58,6 @@ export const MedicationProvider = ({ children }) => {
   );
 };
 
-// Custom hook to easily use the context
 export const useMedication = () => {
   return useContext(MedicationContext);
 };

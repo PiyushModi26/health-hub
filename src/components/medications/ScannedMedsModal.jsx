@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import './ScannedMedsModal.css'; // We'll create this CSS file next
+import './ScannedMedsModal.css';
 
 const ScannedMedsModal = ({ initialMeds, onBulkAdd, onClose }) => {
   const [editableMeds, setEditableMeds] = useState([]);
 
-  // When the modal opens, populate the state with the scanned meds
   useEffect(() => {
-    setEditableMeds(initialMeds);
+    // When modal opens, add default type and time to each scanned med
+    const medsWithDefaults = initialMeds.map(med => ({
+      ...med,
+      type: 'Tablet', // Default type
+      time: '08:00',   // Default time
+    }));
+    setEditableMeds(medsWithDefaults);
   }, [initialMeds]);
 
-  // Handle changes to the name or dosage of a specific medication in the list
   const handleInputChange = (index, field, value) => {
     const updatedMeds = [...editableMeds];
     updatedMeds[index] = { ...updatedMeds[index], [field]: value };
@@ -23,10 +27,11 @@ const ScannedMedsModal = ({ initialMeds, onBulkAdd, onClose }) => {
 
   return (
     <div className="scanned-meds-container">
-      <p>Review the scanned medications below. You can make changes before adding them to your schedule.</p>
+      <p>Review the scanned medications. You can adjust the details before adding them.</p>
       <div className="scanned-meds-list">
         {editableMeds.map((med, index) => (
           <div key={index} className="scanned-med-item">
+            {/* The four form groups will now neatly fall into the 2x2 grid */}
             <div className="form-group">
               <label>Medication Name</label>
               <input
@@ -41,6 +46,26 @@ const ScannedMedsModal = ({ initialMeds, onBulkAdd, onClose }) => {
                 type="text"
                 value={med.dosage || ''}
                 onChange={(e) => handleInputChange(index, 'dosage', e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Type</label>
+              <select value={med.type} onChange={e => handleInputChange(index, 'type', e.target.value)}>
+                <option>Tablet</option>
+                <option>Capsule</option>
+                <option>Syrup</option>
+                <option>Injection</option>
+                <option>Inhaler</option>
+                <option>Cream</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Time</label>
+              <input
+                type="time"
+                value={med.time}
+                onChange={e => handleInputChange(index, 'time', e.target.value)}
               />
             </div>
           </div>

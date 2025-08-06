@@ -2,28 +2,29 @@
     margin-top: 0;
     color: var(--secondary-color);
     font-size: 0.95rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
 .scanned-meds-list {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-top: 1.5rem;
 }
 
 .scanned-med-item {
     background-color: #f8f9fa;
-    padding: 1rem;
+    padding: 1.5rem;
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
+    /* This is the key change for the layout */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Creates a 2x2 grid */
+    gap: 1rem 1.5rem; /* Row and column gap */
 }
 
 .scanned-med-item .form-group {
-    margin-bottom: 1rem;
-}
-
-.scanned-med-item .form-group:last-child {
-    margin-bottom: 0;
+    margin-bottom: 0; /* Remove margin as gap is used */
 }
 
 .modal-actions {

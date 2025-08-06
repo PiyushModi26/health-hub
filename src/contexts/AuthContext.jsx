@@ -18,7 +18,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = (email, password) => {
+  // --- THIS FUNCTION IS NOW ASYNC ---
+  const login = async (email, password) => {
+    // Simulate a network request delay
+    await new Promise(resolve => setTimeout(resolve, 1500)); 
+
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const user = users.find(u => u.email === email && u.password === password);
     if (user) {

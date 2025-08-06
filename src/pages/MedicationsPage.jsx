@@ -4,11 +4,11 @@ import MedicationList from '../components/dashboard/MedicationList';
 import MedicationForm from '../components/dashboard/MedicationForm';
 
 const MedicationsPage = () => {
-  const { medications, addMedication, updateMedication, deleteMedication } = useMedication();
+  // Get the new function from our context
+  const { medications, addMedication, addMultipleMedications, updateMedication, deleteMedication } = useMedication();
   const [editingMedication, setEditingMedication] = useState(null);
 
   return (
-    // The main title has been removed from this container
     <div className="dashboard-grid">
       <div className="medication-schedule">
         <div className="dashboard-header">
@@ -22,6 +22,8 @@ const MedicationsPage = () => {
       </div>
       <MedicationForm
         onAdd={addMedication}
+        // Pass the new bulk add function here
+        onBulkAdd={addMultipleMedications} 
         onUpdate={updateMedication}
         editingMedication={editingMedication}
         setEditingMedication={setEditingMedication}

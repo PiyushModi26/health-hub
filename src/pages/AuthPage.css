@@ -1,0 +1,193 @@
+.auth-page-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: 
+  linear-gradient(135deg, rgba(245, 247, 250, 0.8) 0%, rgba(195, 207, 226, 0.7) 100%),
+  url('../assets/auth-background.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.auth-wrapper {
+  width: 800px;
+  height: 550px;
+  display: flex;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden; /* This is crucial for the sliding animation */
+}
+
+/* --- Form Section (Left Side) --- */
+.auth-form-section {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-form-section h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.auth-form-section .form-group input {
+  background-color: #f0f2f5;
+  border: 1px solid #e0e7f1;
+}
+
+.auth-form-section button {
+  background: #007bff;
+  border-radius: 8px;
+  padding: 0.9rem;
+  font-weight: 600;
+}
+
+/* --- Overlay Section (Right Side, moves left/right) --- */
+.auth-overlay-section {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.auth-overlay {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+  display: flex;
+  background-image: url('../assets/auth-overlay.jpg');
+  background-size: contain; /* Or 'cover' depending on your image and desired effect */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.overlay-panel {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 40px;
+  text-align: center;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel h1 {
+  font-weight: 700;
+  margin: 0;
+}
+
+.overlay-panel p {
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.5;
+  margin: 20px 0 30px;
+}
+
+.overlay-panel button {
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  padding: 12px 45px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+/* --- Animation Classes --- */
+.auth-wrapper.right-panel-active .auth-overlay-section {
+  transform: translateX(-100%);
+}
+
+.auth-wrapper.right-panel-active .auth-overlay {
+  transform: translateX(50%);
+}
+
+.auth-wrapper.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.auth-wrapper.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+/* --- Logging In Alert --- */
+.logging-in-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  color: #007bff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.logging-in-overlay .spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 123, 255, 0.2);
+  border-top-color: #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 900px) {
+  .auth-wrapper {
+    width: 95%;
+    max-width: 450px;
+    flex-direction: column;
+    height: auto;
+  }
+  .auth-overlay-section {
+    display: none; /* Hide overlay on mobile for simplicity */
+  }
+  .auth-form-section {
+    padding: 2rem;
+  }
+}
