@@ -119,7 +119,7 @@
 .ai-tip-response {
   margin-top: 1.5rem;
   padding: 1rem;
-  background-color: #f8f9fa;
+  background-color: #f8f9fa;  
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   font-size: 0.95rem;

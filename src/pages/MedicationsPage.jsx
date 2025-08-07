@@ -4,7 +4,6 @@ import MedicationList from '../components/dashboard/MedicationList';
 import MedicationForm from '../components/dashboard/MedicationForm';
 
 const MedicationsPage = () => {
-  // Get the new function from our context
   const { medications, addMedication, addMultipleMedications, updateMedication, deleteMedication } = useMedication();
   const [editingMedication, setEditingMedication] = useState(null);
 
@@ -22,7 +21,6 @@ const MedicationsPage = () => {
       </div>
       <MedicationForm
         onAdd={addMedication}
-        // Pass the new bulk add function here
         onBulkAdd={addMultipleMedications} 
         onUpdate={updateMedication}
         editingMedication={editingMedication}

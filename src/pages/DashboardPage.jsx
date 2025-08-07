@@ -2,39 +2,37 @@ import React from 'react';
 import { useMedication } from '../contexts/MedicationContext';
 import MedicationList from '../components/dashboard/MedicationList';
 import NextMedication from '../components/dashboard/NextMedication';
-import AiHealthTip from '../components/dashboard/AiHealthTip'; // Re-importing the AI component
-import './DashboardPage.css';
+import AiHealthTip from '../components/dashboard/AiHealthTip';
+import './DashboardPage.css'; 
 
 const DashboardPage = () => {
   const { medications, loading } = useMedication();
 
   if (loading) {
-    return <div>Loading your dashboard...</div>;
+    return <div style={{textAlign: 'center', padding: '2rem'}}>Loading your dashboard...</div>;
   }
 
   return (
-    // This layout will create the two columns
     <div className="new-dashboard-layout">
-      
-      {/* --- Main Content (Left Column) --- */}
       <div className="dashboard-main-content">
-        <NextMedication medications={medications} />
-        <div className="full-schedule-widget">
-          <div className="dashboard-header">
-            <h2>🗓️ Full Medication Schedule</h2>
-          </div>
-          <MedicationList
-            medications={medications}
-            isReadOnly={true}
-          />
+        <div className="widget next-med-widget">
+            <NextMedication medications={medications} />
+        </div>
+        <div className="widget full-schedule-widget">
+            <h2 className="widget-header">
+                <span role="img" aria-label="calendar">🗓️</span> Full Medication Schedule
+            </h2>
+            <MedicationList
+                medications={medications}
+                isReadOnly={true}
+            />
         </div>
       </div>
-
-      {/* --- Sidebar (Right Column) --- */}
       <div className="dashboard-sidebar">
-        <AiHealthTip />
+        <div className="widget">
+            <AiHealthTip />
+        </div>
       </div>
-      
     </div>
   );
 };

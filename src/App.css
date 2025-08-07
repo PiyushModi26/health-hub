@@ -1,18 +1,287 @@
-/* General Body & Root Styles */
+/* --- 1. NEW: Modern Color Palette & Global Settings --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --primary-color: #007bff;
-  --primary-hover: #0056b3;
-  --secondary-color: #6c757d;
-  --background-color: #f8f9fa;
-  --surface-color: #ffffff;
-  --text-color: #343a40;
-  --border-color: #dee2e6;
-  --danger-color: #dc3545;
-  --danger-hover: #c82333;
-  --success-color: #28a745;
-  --font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --border-radius: 8px;
+  --primary-color: #3B82F6; /* A modern, friendly blue */
+  --primary-hover: #2563EB;
+  --secondary-color: #6B7280; /* A softer grey for text */
+  --background-color: #F9FAFB; /* A very light, clean grey */
+  --surface-color: #FFFFFF;
+  --text-color: #1F2937;
+  --border-color: #E5E7EB;
+  --danger-color: #EF4444;
+  --danger-hover: #DC2626;
+  --success-color: #10B981;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --border-radius: 0.75rem; /* Slightly larger, modern border radius */
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- 2. REDESIGNED: Header --- */
+.app-header {
+  background-color: var(--surface-color);
+  padding: 1rem 2.5rem;
+  box-shadow: none; /* Cleaner look */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo img {
+  height: 36px;
+}
+
+.app-header nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-header nav .nav-link-button {
+  background: none;
+  border: none;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.app-header nav .nav-link-button:hover {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.app-header nav a.active .nav-link-button {
+  background-color: #EFF6FF; /* Light blue active state */
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.app-header nav .logout-button {
+  background-color: transparent;
+  color: var(--secondary-color);
+}
+
+.app-header nav .logout-button:hover {
+  background-color: var(--danger-color);
+  color: #fff;
+}
+
+/* --- 3. REDESIGNED: Main Content & Widgets --- */
+.main-content {
+  padding: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Base style for all content boxes/widgets */
+.widget {
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* --- 4. REDESIGNED: Forms & Buttons --- */
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.error-message {
+  color: var(--danger-color);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.medication-form-container {
+  background: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.medication-schedule {
+  background: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+}
+
+/* --- 5. REDESIGNED: Medication List --- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.dashboard-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.medication-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.medication-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.medication-item:last-child {
+  border-bottom: none;
+}
+.medication-item:hover {
+  background-color: #F9FAFB;
+  box-shadow: inset 4px 0 0 0 var(--primary-color); /* Left accent on hover */
+}
+
+.medication-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: left;
+}
+
+.medication-time {
+  font-size: 1rem;
+  background-color: #EFF6FF;
+  color: var(--primary-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.medication-details h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.medication-details p {
+  margin: 0;
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+}
+
+.medication-actions button {
+  font-weight: 500;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.edit-btn {
+  color: var(--primary-color);
+  background-color: transparent;
+  border-color: transparent;
+}
+.edit-btn:hover {
+  background-color: #EFF6FF;
+}
+
+.remove-btn {
+  color: var(--danger-color);
+  background-color: transparent;
+  border-color: transparent;
+}
+.remove-btn:hover {
+  background-color: #FEE2E2;
+}
+
+/* --- AI Scanner --- */
+.ai-scanner {
+  text-align: center;
+}
+.upload-btn {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  color: var(--primary-color);
+  background-color: #EFF6FF;
+  border: 1px dashed #BFDBFE;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: 500;
+}
+.upload-btn:hover {
+  background-color: #DBEAFE;
 }
 
 body {
