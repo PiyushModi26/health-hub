@@ -1,0 +1,36 @@
+.notification {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border-left: 5px solid var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transform: translateX(calc(100% + 2rem));
+  transition: transform 0.3s ease-in-out;
+  z-index: 2000;
+  max-width: 350px;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification-content p {
+  margin: 0.25rem 0 0 0;
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--secondary-color);
+}

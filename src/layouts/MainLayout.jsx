@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, Outlet } from 'react-router-dom'; // 1. Import Outlet
 import { useAuth } from '../contexts/AuthContext';
-import logoSrc from '../assets/logo.png'; // Make sure your logo is in src/assets
+import logoSrc from '../assets/logo.png';
 
 const Header = () => {
   const { logout } = useAuth();
@@ -34,11 +34,14 @@ const Header = () => {
   );
 };
 
-const MainLayout = ({ children }) => {
+
+const MainLayout = () => {
   return (
     <>
       <Header />
-      <main className="main-content">{children}</main>
+      <main className="main-content">
+        <Outlet /> {/* 2. Use Outlet instead of children */}
+      </main>
     </>
   );
 };

@@ -1,0 +1,50 @@
+.medications-page-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+/* Base style for the cards on this page */
+.medication-card {
+  background: var(--surface-color);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--border-color);
+}
+
+.medication-card-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.medication-card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Hover effect for the list items */
+.medication-list .medication-item:hover {
+  background-color: var(--background-color);
+  box-shadow: inset 4px 0 0 0 var(--primary-color);
+}
+
+/* Styling for the form on the right */
+.medication-form-container.medication-card {
+  position: sticky;
+  top: 120px; /* Adjust based on your header height */
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .medications-page-grid {
+    grid-template-columns: 1fr;
+  }
+  .medication-form-container.medication-card {
+    position: static;
+  }
+}
