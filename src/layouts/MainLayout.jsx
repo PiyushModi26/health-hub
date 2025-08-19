@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate, Outlet } from 'react-router-dom'; // 1. Import Outlet
+import { NavLink, Link, useNavigate, Outlet } from 'react-router-dom'; // 1. Import Outlet
 import { useAuth } from '../contexts/AuthContext';
 import logoSrc from '../assets/logo.png';
 

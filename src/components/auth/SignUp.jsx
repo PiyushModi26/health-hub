@@ -1,48 +1,40 @@
-import React, { useState } from 'react';
+import { useState } from 'react'
+import { useAuth } from '../../contexts/AuthContext'
+import { Link, useNavigate } from 'react-router-dom'
 
-const SignUp = () => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
-  const handleSignUp = (e) => {
-    e.preventDefault();
-    setError('');
+export default function SignUp() {
+const { signUp } = useAuth()
+const nav = useNavigate()
+const [fullName, setFullName] = useState('')
+const [email, setEmail] = useState('')
+const [password, setPassword] = useState('')
+const [err, setErr] = useState('')
+const [loading, setLoading] = useState(false)
 
-    // For this design, we'll just show a success message
-    // In a real app, you'd likely auto-login or redirect
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    if (users.some(u => u.email === email)) {
-      setError("An account with this email already exists.");
-      return;
-    }
 
-    const newUser = { id: Date.now(), fullName, email, password };
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-    
-    alert('Sign up successful! Please switch to the Sign In panel to log in.');
-  };
+const onSubmit = async (e) => {
+e.preventDefault()
+setErr(''); setLoading(true)
+try {
+await signUp(email, password, fullName)
+// Depending on your Supabase email settings, user may need to confirm email
+nav('/');
+} catch (e) { setErr(e.message) } finally { setLoading(false) }
+}
 
-  return (
-    <>
-      <h2>Create Account</h2>
-      <form onSubmit={handleSignUp}>
-        {error && <p className="error-message">{error}</p>}
-        <div className="form-group">
-          <input type="text" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-    </>
-  );
-};
 
-export default SignUp;
+return (
+<div className="container">
+<h1>Create account</h1>
+<form onSubmit={onSubmit}>
+<input placeholder="Full name" value={fullName} onChange={(e)=>setFullName(e.target.value)} />
+<input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} required />
+<input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required />
+{err && <p style={{color:'crimson'}}>{err}</p>}
+<button disabled={loading} type="submit">{loading ? 'Signing up…' : 'Sign Up'}</button>
+</form>
+<p>Already have an account? <Link to="/login">Login</Link></p>
+</div>
+)
+}
