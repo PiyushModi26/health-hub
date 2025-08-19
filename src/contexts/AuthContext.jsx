@@ -1,52 +1,51 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const loggedInUserId = sessionStorage.getItem('loggedInUserId');
-    if (loggedInUserId) {
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const user = users.find(u => u.id === parseInt(loggedInUserId));
-      if (user) {
-        setCurrentUser(user);
-      }
-    }
-    setLoading(false);
+    const session = supabase.auth.getSession();
+    session.then(({ data }) => setUser(data?.session?.user ?? null));
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
-  // --- THIS FUNCTION IS NOW ASYNC ---
+  // ✅ Define signUp function
+  const signUp = async (email, password) => {
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) throw error;
+    return data;
+  };
+
+  // ✅ Define login function
   const login = async (email, password) => {
-    // Simulate a network request delay
-    await new Promise(resolve => setTimeout(resolve, 1500)); 
-
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.email === email && u.password === password);
-    if (user) {
-      setCurrentUser(user);
-      sessionStorage.setItem('loggedInUserId', user.id);
-      return user;
-    }
-    return null;
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
   };
 
-  const logout = () => {
-    setCurrentUser(null);
-    sessionStorage.removeItem('loggedInUserId');
+  // ✅ Define logout function
+  const logout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
   };
-
-  const value = { currentUser, login, logout, loading };
 
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, signUp, login, logout }}>
+      {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => {
+export function useAuth() {
   return useContext(AuthContext);
-};
+}

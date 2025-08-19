@@ -1,40 +1,40 @@
-import { useState } from 'react'
-import { useAuth } from '../../contexts/AuthContext'
-import { Link, useNavigate } from 'react-router-dom'
-
+import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
-const { signUp } = useAuth()
-const nav = useNavigate()
-const [fullName, setFullName] = useState('')
-const [email, setEmail] = useState('')
-const [password, setPassword] = useState('')
-const [err, setErr] = useState('')
-const [loading, setLoading] = useState(false)
+  const { signUp } = useAuth(); // ✅ this will now work
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await signUp(email, password);
+      alert("Signup successful! Please check your email to confirm.");
+      navigate("/login");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
-const onSubmit = async (e) => {
-e.preventDefault()
-setErr(''); setLoading(true)
-try {
-await signUp(email, password, fullName)
-// Depending on your Supabase email settings, user may need to confirm email
-nav('/');
-} catch (e) { setErr(e.message) } finally { setLoading(false) }
-}
-
-
-return (
-<div className="container">
-<h1>Create account</h1>
-<form onSubmit={onSubmit}>
-<input placeholder="Full name" value={fullName} onChange={(e)=>setFullName(e.target.value)} />
-<input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} required />
-<input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required />
-{err && <p style={{color:'crimson'}}>{err}</p>}
-<button disabled={loading} type="submit">{loading ? 'Signing up…' : 'Sign Up'}</button>
-</form>
-<p>Already have an account? <Link to="/login">Login</Link></p>
-</div>
-)
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+      />
+      <button type="submit">Sign Up</button>
+      <p>Already have an account? <Link to="/login">Login</Link></p>
+    </form>
+  );
 }
