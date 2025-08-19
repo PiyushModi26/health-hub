@@ -81,11 +81,7 @@ const MedicationForm = ({ onAdd, onBulkAdd, onUpdate, editingMedication, setEdit
             <label>Time</label>
             <input type="time" value={med.time} onChange={e => setMed({ ...med, time: e.target.value })} required />
           </div>
-           <div className="form-group">
-            <label>Image URL (Optional)</label>
-            <input type="text" value={med.imageUrl} onChange={e => setMed({ ...med, imageUrl: e.target.value })} />
-          </div>
-          {editingMedication ? (
+                    {editingMedication ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <button type="submit" className="update-btn">Update</button>
               <button type="button" onClick={handleCancelEdit} style={{backgroundColor: 'var(--secondary-color)'}}>Cancel</button>

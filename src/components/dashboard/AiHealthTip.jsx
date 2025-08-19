@@ -19,7 +19,7 @@ const AiHealthTip = () => {
 
   return (
     <div className="ai-health-tip">
-      <h3>🤖 AI Health Assistant</h3>
+      <h3>AI Health Assistant</h3>
       <p>Ask a general question about your medications or health.</p>
       <form onSubmit={handleGetTip}>
         <textarea
