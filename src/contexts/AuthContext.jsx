@@ -1,51 +1,71 @@
-import { createContext, useContext, useEffect, useState } from "react";
+// src/contexts/AuthContext.jsx
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-const AuthContext = createContext();
+const Ctx = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const session = supabase.auth.getSession();
-    session.then(({ data }) => setUser(data?.session?.user ?? null));
+    // Check initial session
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (error) console.error("Get session error:", error.message);
+      console.log("Initial session:", data?.session);
+      setUser(data?.session?.user ?? null);
+      setReady(true);
+    });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    // Listen for auth changes
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth event:", event, "Session:", session);
       setUser(session?.user ?? null);
     });
 
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    return () => sub.subscription.unsubscribe();
   }, []);
 
-  // ✅ Define signUp function
-  const signUp = async (email, password) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    if (error) throw error;
-    return data;
+  // SIGNUP
+  const signup = async (email, password, fullName) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName }, // metadata
+      },
+    });
+    if (error) {
+      console.error("Signup error:", error.message);
+      throw error;
+    }
+    console.log("Signup success:", data);
+    return data.user;
   };
 
-  // ✅ Define login function
+  // LOGIN
   const login = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    return data;
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      console.error("Login error:", error.message);
+      throw error;
+    }
+    console.log("Login success:", data);
+    return data.user;
   };
 
-  // ✅ Define logout function
+  // LOGOUT
   const logout = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error("Logout error:", error.message);
     setUser(null);
   };
 
-  return (
-    <AuthContext.Provider value={{ user, signUp, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const value = { user, ready, signup, login, logout };
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(Ctx);
